@@ -470,6 +470,10 @@ body {
   font-size: 0.85rem;
 }
 .couple-grid .item:hover .overlay { opacity: 1; }
+.couple-grid .item.landscape img {
+  object-fit: contain;
+  background: rgba(0,0,0,0.3);
+}
 
 /* ===== Videos ===== */
 .video-section {
@@ -1277,7 +1281,18 @@ const allHer = herFiles.map(f => ({ src: `photos/her/${f}`, type: 'her' }));
 herFiles.forEach(f => {
   const d = document.createElement('div');
   d.className = 'item';
-  d.innerHTML = `<img src="photos/her/${f}" alt="" loading="lazy" decoding="async" onclick="openLB('photos/her/${f}')">`;
+  const img = document.createElement('img');
+  img.src = `photos/her/${f}`;
+  img.alt = '';
+  img.loading = 'lazy';
+  img.decoding = 'async';
+  img.addEventListener('load', function() {
+    if (this.naturalWidth > this.naturalHeight) {
+      this.closest('.item').classList.add('landscape');
+    }
+  });
+  img.addEventListener('click', () => openLB(`photos/her/${f}`));
+  d.appendChild(img);
   document.getElementById('herGrid').appendChild(d);
 });
 createObserver('.her-grid .item');
@@ -1350,7 +1365,18 @@ const allCouple = coupleFiles.map(f => ({ src: `photos/couple/${f}`, type: 'coup
 coupleFiles.forEach(f => {
   const d = document.createElement('div');
   d.className = 'item';
-  d.innerHTML = `<img src="photos/couple/${f}" alt="" loading="lazy" decoding="async" onclick="openLB('photos/couple/${f}')">`;
+  const img = document.createElement('img');
+  img.src = `photos/couple/${f}`;
+  img.alt = '';
+  img.loading = 'lazy';
+  img.decoding = 'async';
+  img.addEventListener('load', function() {
+    if (this.naturalWidth > this.naturalHeight) {
+      this.closest('.item').classList.add('landscape');
+    }
+  });
+  img.addEventListener('click', () => openLB(`photos/couple/${f}`));
+  d.appendChild(img);
   document.getElementById('coupleGrid').appendChild(d);
 });
 createObserver('.couple-grid .item');

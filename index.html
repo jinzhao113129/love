@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>田缘 💕</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Georgia', 'Songti SC', 'Microsoft YaHei', serif;
+  background: #0d0d1a;
+  color: #f5e6d3;
+  overflow-x: hidden;
+}
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #0d0d1a; }
+::-webkit-scrollbar-thumb { background: #c08497; border-radius: 3px; }
+
+/* ===== Hero ===== */
+.hero {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  overflow: hidden;
+}
+.hero-bg {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: url('photos/her/mmexport1773504704774.jpg') center/cover no-repeat;
+  filter: brightness(0.35) saturate(0.8);
+  transform: scale(1.1);
+  animation: heroZoom 20s ease-in-out infinite alternate;
+}
+@keyframes heroZoom {
+  from { transform: scale(1.1); }
+  to { transform: scale(1.2); }
+}
+.hero-overlay {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: linear-gradient(180deg, rgba(13,13,26,0.3) 0%, rgba(13,13,26,0.7) 100%);
+}
+.floating-hearts {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+}
+.heart-p {
+  position: absolute;
+  bottom: -30px;
+  font-size: var(--s);
+  left: var(--l);
+  animation: floatUp var(--d) linear infinite;
+  animation-delay: var(--delay);
+  opacity: 0.4;
+  color: #c08497;
+}
+@keyframes floatUp {
+  0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+  10% { opacity: 0.5; }
+  90% { opacity: 0.3; }
+  100% { transform: translateY(-110vh) rotate(720deg); opacity: 0; }
+}
+.hero-content { z-index: 10; animation: fadeIn 1.8s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+.hero-sub {
+  font-size: 1rem;
+  color: #c08497;
+  letter-spacing: 6px;
+  margin-bottom: 16px;
+  font-weight: 300;
+}
+.hero-title {
+  font-size: 4.5rem;
+  color: #fff;
+  margin-bottom: 8px;
+  text-shadow: 0 0 60px rgba(192,132,151,0.25);
+  letter-spacing: 4px;
+}
+.hero-title .accent { color: #c08497; }
+.hero-name {
+  font-size: 1.3rem;
+  color: rgba(245,230,211,0.5);
+  letter-spacing: 10px;
+  margin-top: 8px;
+}
+.hero-days {
+  margin-top: 28px;
+  font-size: 1.1rem;
+  color: rgba(245,230,211,0.6);
+  letter-spacing: 2px;
+}
+.hero-days span {
+  font-size: 2.2rem;
+  font-weight: bold;
+  color: #c08497;
+}
+.scroll-down {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  animation: bounce 2s infinite;
+  color: rgba(245,230,211,0.3);
+  font-size: 1.8rem;
+  cursor: pointer;
+}
+@keyframes bounce {
+  0%,100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(10px); }
+}
+
+/* ===== Sections ===== */
+.section {
+  padding: 90px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.section-title {
+  text-align: center;
+  font-size: 2.2rem;
+  margin-bottom: 12px;
+  color: #fff;
+  letter-spacing: 2px;
+}
+.section-title .accent { color: #c08497; }
+.section-sub {
+  text-align: center;
+  color: rgba(245,230,211,0.4);
+  margin-bottom: 50px;
+  font-size: 0.9rem;
+  letter-spacing: 3px;
+}
+
+/* ===== Her Gallery ===== */
+.her-section {
+  background: linear-gradient(180deg, #0d0d1a 0%, #12102a 100%);
+}
+.her-grid {
+  columns: 4;
+  column-gap: 14px;
+  padding: 0 10px;
+}
+.her-grid .item {
+  break-inside: avoid;
+  margin-bottom: 14px;
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.6s ease;
+  position: relative;
+}
+.her-grid .item.visible { opacity: 1; transform: translateY(0); }
+.her-grid .item img {
+  width: 100%;
+  display: block;
+  border-radius: 12px;
+  transition: transform 0.6s;
+}
+.her-grid .item:hover img { transform: scale(1.06); }
+.her-grid .item .overlay {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: 25px 15px 15px;
+  background: linear-gradient(transparent, rgba(0,0,0,0.6));
+  opacity: 0;
+  transition: opacity 0.3s;
+  color: #fff;
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+}
+.her-grid .item:hover .overlay { opacity: 1; }
+
+/* ===== Couple Timeline ===== */
+.couple-section {
+  background: linear-gradient(180deg, #12102a 0%, #0d0d1a 100%);
+}
+.couple-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+  padding: 0 10px;
+}
+.couple-grid .item {
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  opacity: 0;
+  transform: scale(0.92);
+  transition: all 0.5s ease;
+  position: relative;
+}
+.couple-grid .item.visible { opacity: 1; transform: scale(1); }
+.couple-grid .item img {
+  width: 100%;
+  height: 280px;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s;
+}
+.couple-grid .item:hover img { transform: scale(1.07); }
+.couple-grid .item .overlay {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: 25px 15px 15px;
+  background: linear-gradient(transparent, rgba(0,0,0,0.65));
+  opacity: 0;
+  transition: opacity 0.3s;
+  color: #fff;
+  font-size: 0.85rem;
+}
+.couple-grid .item:hover .overlay { opacity: 1; }
+
+/* ===== Videos ===== */
+.video-section {
+  background: linear-gradient(180deg, #0d0d1a 0%, #1a0d1a 100%);
+}
+.video-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+  padding: 0 10px;
+}
+.video-item {
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(25px);
+  transition: all 0.5s ease;
+  position: relative;
+  aspect-ratio: 9/16;
+  background: #000;
+}
+.video-item.visible { opacity: 1; transform: translateY(0); }
+.video-item video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.video-item .play-btn {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 55px; height: 55px;
+  background: rgba(192,132,151,0.8);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: #fff;
+  transition: transform 0.3s, background 0.3s;
+  pointer-events: none;
+}
+.video-item:hover .play-btn { transform: translate(-50%, -50%) scale(1.1); background: rgba(192,132,151,0.95); }
+.video-item .duration {
+  position: absolute;
+  bottom: 10px; right: 10px;
+  background: rgba(0,0,0,0.6);
+  color: #fff;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  pointer-events: none;
+}
+.video-item .vdate {
+  position: absolute;
+  bottom: 10px; left: 10px;
+  color: rgba(255,255,255,0.6);
+  font-size: 0.7rem;
+  pointer-events: none;
+  letter-spacing: 1px;
+}
+
+/* ===== Video Player Modal ===== */
+.vmodal {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.92);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(15px);
+}
+.vmodal.active { display: flex; }
+.vmodal video {
+  max-width: 92vw;
+  max-height: 88vh;
+  border-radius: 10px;
+  box-shadow: 0 25px 80px rgba(0,0,0,0.6);
+  animation: zoomIn 0.3s ease;
+}
+@keyframes zoomIn { from { transform: scale(0.85); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.vmodal-close {
+  position: absolute;
+  top: 25px; right: 30px;
+  color: #fff;
+  font-size: 2rem;
+  cursor: pointer;
+  opacity: 0.5;
+  transition: opacity 0.3s;
+  background: none;
+  border: none;
+  z-index: 1001;
+}
+.vmodal-close:hover { opacity: 1; }
+
+/* ===== Photo Lightbox ===== */
+.lightbox {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.92);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(15px);
+}
+.lightbox.active { display: flex; }
+.lightbox img {
+  max-width: 90vw;
+  max-height: 85vh;
+  border-radius: 8px;
+  box-shadow: 0 20px 80px rgba(0,0,0,0.5);
+  animation: zoomIn 0.3s ease;
+}
+.lightbox-close {
+  position: absolute;
+  top: 25px; right: 30px;
+  color: #fff;
+  font-size: 2rem;
+  cursor: pointer;
+  opacity: 0.5;
+  background: none;
+  border: none;
+  z-index: 1001;
+  transition: opacity 0.3s;
+}
+.lightbox-close:hover { opacity: 1; }
+
+/* ===== Love Letter ===== */
+.letter-section {
+  background: linear-gradient(180deg, #1a0d1a 0%, #0d0d1a 100%);
+}
+.letter-card {
+  max-width: 680px;
+  margin: 0 auto;
+  background: rgba(255,255,255,0.04);
+  backdrop-filter: blur(20px);
+  border-radius: 20px;
+  padding: 50px 45px;
+  border: 1px solid rgba(192,132,151,0.12);
+  position: relative;
+}
+.letter-card::before {
+  content: '\2764';
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1.8rem;
+  color: #c08497;
+  background: #0d0d1a;
+  padding: 0 20px;
+}
+.letter-greeting {
+  font-size: 1.4rem;
+  color: #c08497;
+  margin-bottom: 22px;
+  text-align: center;
+  letter-spacing: 2px;
+}
+.letter-body {
+  line-height: 2.1;
+  color: rgba(245,230,211,0.8);
+  font-size: 1rem;
+}
+.letter-body p {
+  margin-bottom: 18px;
+  opacity: 0;
+  transform: translateY(18px);
+  transition: all 0.8s ease;
+  text-indent: 2em;
+}
+.letter-body p.visible { opacity: 1; transform: translateY(0); }
+.letter-sign {
+  margin-top: 35px;
+  text-align: right;
+  font-size: 1.1rem;
+  color: #c08497;
+  font-style: italic;
+  letter-spacing: 1px;
+}
+
+/* ===== Counter ===== */
+.counter-section {
+  text-align: center;
+  padding: 70px 20px;
+  background: #0d0d1a;
+  border-top: 1px solid rgba(192,132,151,0.08);
+}
+.counter-title {
+  font-size: 1.6rem;
+  color: #fff;
+  margin-bottom: 35px;
+  letter-spacing: 2px;
+}
+.counter-title .accent { color: #c08497; }
+.counter-box {
+  display: inline-flex;
+  gap: 25px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.counter-unit {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(192,132,151,0.15);
+  border-radius: 14px;
+  padding: 22px 30px;
+  min-width: 110px;
+}
+.counter-unit .num {
+  font-size: 2.8rem;
+  font-weight: bold;
+  color: #c08497;
+  display: block;
+}
+.counter-unit .lbl {
+  font-size: 0.8rem;
+  color: rgba(245,230,211,0.4);
+  margin-top: 6px;
+  letter-spacing: 2px;
+}
+
+/* ===== Footer ===== */
+footer {
+  text-align: center;
+  padding: 40px 20px;
+  background: #0d0d1a;
+  border-top: 1px solid rgba(192,132,151,0.06);
+}
+footer p {
+  color: rgba(245,230,211,0.3);
+  font-size: 0.85rem;
+  letter-spacing: 2px;
+}
+footer .heart { color: #c08497; }
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .hero-title { font-size: 2.8rem; }
+  .hero-sub { font-size: 0.8rem; letter-spacing: 4px; }
+  .hero-name { font-size: 1rem; letter-spacing: 6px; }
+  .hero-days span { font-size: 1.7rem; }
+  .her-grid { columns: 2; column-gap: 10px; }
+  .her-grid .item { margin-bottom: 10px; }
+  .section-title { font-size: 1.7rem; }
+  .section { padding: 60px 15px; }
+  .letter-card { padding: 30px 20px; margin: 0 10px; }
+  .counter-box { gap: 12px; }
+  .counter-unit { min-width: 75px; padding: 14px 16px; }
+  .counter-unit .num { font-size: 1.8rem; }
+  .couple-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .couple-grid .item img { height: 200px; }
+  .video-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .video-item { aspect-ratio: 9/16; }
+  .vmodal video { max-width: 96vw; max-height: 70vh; }
+}
+@media (max-width: 480px) {
+  .her-grid { columns: 2; }
+  .couple-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .couple-grid .item img { height: 160px; }
+  .video-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="floating-hearts" id="hearts"></div>
+  <div class="hero-content">
+    <p class="hero-sub">✦ 给 我 最 爱 的 ✦</p>
+    <h1 class="hero-title">田 <span class="accent">缘</span></h1>
+    <p class="hero-name">— 金朝 · 2026.01.16 —</p>
+    <p class="hero-days">我们已经在一起 <span id="dayCount">0</span> 天</p>
+  </div>
+  <div class="scroll-down" onclick="document.getElementById('her').scrollIntoView({behavior:'smooth'})">⌄</div>
+</section>
+
+<!-- ===== HER GALLERY ===== -->
+<section class="her-section" id="her">
+  <div class="section">
+    <h2 class="section-title">她的<span class="accent">美丽</span></h2>
+    <p class="section-sub">— 你永远是我眼中最美的风景 —</p>
+    <div class="her-grid" id="herGrid"></div>
+  </div>
+</section>
+
+<!-- ===== COUPLE GALLERY ===== -->
+<section class="couple-section" id="couple">
+  <div class="section">
+    <h2 class="section-title">我们的<span class="accent">故事</span></h2>
+    <p class="section-sub">— 从相遇开始，每一个瞬间都值得铭记 —</p>
+    <div class="couple-grid" id="coupleGrid"></div>
+  </div>
+</section>
+
+<!-- ===== VIDEOS ===== -->
+<section class="video-section" id="video">
+  <div class="section">
+    <h2 class="section-title">日常<span class="accent">视频</span></h2>
+    <p class="section-sub">— 和你在一起的每一天，都值得被记录 —</p>
+    <div class="video-grid" id="videoGrid"></div>
+  </div>
+</section>
+
+<!-- ===== LOVE LETTER ===== -->
+<section class="letter-section" id="letter">
+  <div class="section">
+    <h2 class="section-title">写给<span class="accent">你</span></h2>
+    <p class="section-sub">— 一些藏在心里的话 —</p>
+    <div class="letter-card">
+      <div class="letter-greeting">亲爱的田缘：</div>
+      <div class="letter-body">
+        <p>2026年1月16日，是我生命中最重要的一天。从那天起，我的世界多了一个你，变得更加温暖、更加完整。</p>
+        <p>你的笑容，是我每天最想看到的画面。你的声音，是我听过最温柔的声音。和你在一起的时候，哪怕什么都不做，只是静静地待着，我都觉得特别幸福。</p>
+        <p>你总是问我为什么这么喜欢你——其实没有为什么。喜欢你这件事，就像呼吸一样自然。你的可爱、你的温柔、你的小脾气，每一个你，都是我最爱的样子。</p>
+        <p>未来的路还很长，我想牵着你的手，一起去看更多的风景，一起创造更多属于我们的回忆。我会一直陪在你身边，做你的依靠，给你所有的偏爱。</p>
+        <p>田缘，遇见你，是我这辈子最幸运的事。我爱你。❤️</p>
+      </div>
+      <div class="letter-sign">— 爱你的金朝</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== COUNTER ===== -->
+<section class="counter-section">
+  <h2 class="counter-title">我们在一起 <span class="accent">已经</span></h2>
+  <div class="counter-box">
+    <div class="counter-unit"><span class="num" id="daysD">0</span><span class="lbl">天</span></div>
+    <div class="counter-unit"><span class="num" id="hoursD">00</span><span class="lbl">小时</span></div>
+    <div class="counter-unit"><span class="num" id="minsD">00</span><span class="lbl">分钟</span></div>
+    <div class="counter-unit"><span class="num" id="secsD">00</span><span class="lbl">秒</span></div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <p>Made with <span class="heart">&hearts;</span> by 金朝 · 2026</p>
+</footer>
+
+<!-- ===== LIGHTBOX (photo) ===== -->
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" onclick="closeLB()">&times;</button>
+  <img id="lbImg" src="" alt="">
+</div>
+
+<!-- ===== VIDEO MODAL ===== -->
+<div class="vmodal" id="vmodal">
+  <button class="vmodal-close" onclick="closeVM()">&times;</button>
+  <video id="modalVideo" controls playsinline></video>
+</div>
+
+<script>
+// ===== Hearts =====
+const heartsEl = document.getElementById('hearts');
+for (let i = 0; i < 28; i++) {
+  const h = document.createElement('div');
+  h.className = 'heart-p';
+  h.textContent = ['♡','♥','❤'][Math.floor(Math.random()*3)];
+  h.style.cssText = `
+    --s: ${Math.random()*18+10}px; --l: ${Math.random()*100}%;
+    --d: ${Math.random()*12+10}s; --delay: ${Math.random()*15}s;
+    color: ${['#c08497','#d4a0b0','#b07088'][Math.floor(Math.random()*3)]}
+  `;
+  heartsEl.appendChild(h);
+}
+
+// ===== Anniversary =====
+const anniv = new Date(2026, 0, 16);
+function updDays() {
+  const now = new Date(), diff = now - anniv;
+  document.getElementById('dayCount').textContent = Math.floor(diff/86400000);
+}
+updDays();
+function updCounter() {
+  const diff = new Date() - anniv;
+  document.getElementById('daysD').textContent = Math.floor(diff/86400000);
+  document.getElementById('hoursD').textContent = String(Math.floor((diff%86400000)/3600000)).padStart(2,'0');
+  document.getElementById('minsD').textContent = String(Math.floor((diff%3600000)/60000)).padStart(2,'0');
+  document.getElementById('secsD').textContent = String(Math.floor((diff%60000)/1000)).padStart(2,'0');
+}
+updCounter(); setInterval(updCounter, 1000);
+
+// ===== Her Photos =====
+async function loadHerPhotos() {
+  const grid = document.getElementById('herGrid');
+  try {
+    const r = await fetch('photos/her/');
+    // Can't list files via fetch - use hardcoded list
+  } catch(e) {}
+  // Build from known file list
+  const files = [
+    "mmexport1767107640891.jpg","mmexport1767107662711.jpg","mmexport1767107720815.jpg",
+    "mmexport1769014829744.jpg","mmexport1769014832051.jpg","mmexport1769014930676.jpg",
+    "mmexport1769014932666.jpg","mmexport1769014937271.jpg","mmexport1769014939592.jpg",
+    "mmexport1769014972830.jpg","mmexport1769014976861.jpg","mmexport1769014990295.jpg",
+    "mmexport1769015005922.jpg","mmexport1773146204969.jpg","mmexport1773232623853.jpg",
+    "mmexport1773232629515.jpg","mmexport1773504704774.jpg","mmexport1773638794485.jpg",
+    "mmexport1773748114454.jpg","mmexport1777620303321.jpg","mmexport1777620352986.jpg",
+    "mmexport1777620361572.jpg","mmexport1778168770398.jpg","mmexport1779277199079.jpg"
+  ];
+  files.forEach((f, i) => {
+    const d = document.createElement('div');
+    d.className = 'item';
+    d.innerHTML = `<img src="photos/her/${f}" alt="" loading="lazy" onclick="openLB('photos/her/${f}')">`;
+    grid.appendChild(d);
+  });
+  // Reveal
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.her-grid .item').forEach(el => obs.observe(el));
+}
+loadHerPhotos();
+
+// ===== Couple Photos =====
+async function loadCouplePhotos() {
+  const grid = document.getElementById('coupleGrid');
+  const files = [
+    "mmexport1768232802157.jpg","mmexport1770185303289.jpg","mmexport1770185316072.jpg",
+    "mmexport1770225882137.jpg","IMG_20260222_203633.jpg","mmexport1771827055750.jpg",
+    "mmexport1772126618745.jpg","mmexport1772126842131.jpg","mmexport1772126848369.jpg",
+    "mmexport1772212477157.jpg","mmexport1772219820066.jpg","IMG_20260304_203219.jpg",
+    "IMG_20260304_203306.jpg","mmexport1772646416354.jpg","mmexport1772646420142.jpg",
+    "mmexport1772646439603.jpg","mmexport1772646443334.jpg","mmexport1773313670466.jpg",
+    "mmexport1773313679866.jpg","mmexport1778339351297.jpg","mmexport1778339354736.jpg",
+    "mmexport1778339359591.jpg","mmexport1778339363252.jpg","mmexport1778339366271.jpg",
+    "mmexport1778339369960.jpg","mmexport1778339376689.jpg","mmexport1778339383211.jpg",
+    "mmexport1778339391267.jpg","mmexport1778394133516.jpg","mmexport1778394170078.jpg",
+    "mmexport1778394174351.jpg"
+  ];
+  files.forEach((f, i) => {
+    const d = document.createElement('div');
+    d.className = 'item';
+    d.innerHTML = `<img src="photos/couple/${f}" alt="" loading="lazy" onclick="openLB('photos/couple/${f}')">`;
+    grid.appendChild(d);
+  });
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.couple-grid .item').forEach(el => obs.observe(el));
+}
+loadCouplePhotos();
+
+// ===== Videos =====
+const videoFiles = [
+  "04100225-2009-4364-b00e-ca043dd35ecd1772973606473.mp4","05b8bc69-f035-443f-a19d-960f1196fd641779786345080.mp4",
+  "1770136092189.mp4","1773041053038.mp4","230257a2-c149-40ad-80d1-aace56aba5631771774773481.mp4",
+  "296f8365-59bc-492d-918c-8bf40a2dc0c11779441487907.mp4","37b5310d-6f5e-4f9d-be22-1bcfb3a67ab91779264819853.mp4",
+  "6cef4fd7-f225-4396-9562-4a3cbddb74381779974337649.mp4","7279b2e4-8dd3-4684-9568-ccba7c5c08011771774451799.mp4",
+  "75dce97a-e26d-4e9d-a3e6-ca136bbeccd61779347988015.mp4","7ed5adef-f0f8-4423-abb1-85d48a43fbbf1773400066142.mp4",
+  "8d88b01c-e6ad-4018-84a0-ab59f8ea2cb61772638229288.mp4","91d9fc34-9ab7-404f-8d36-4b4f55cc0bc41778138318532.mp4",
+  "TG-2026-03-02-072943827.mp4","afe13189-7c66-4e70-885e-7f7bb3309ee51772726887126.mp4",
+  "b854e2ce-be2d-49cf-a347-8a2dbf2b3a8e1773146983330.mp4","dbd3621c-ad1f-4793-a04e-7f7f0acc459b1773134352840.mp4",
+  "e24bbede-ecf3-4c0a-9b63-57433f7be2951779937894821.mp4","f1128409-1d1e-493d-ac70-0ab77f49895f1779950750159.mp4",
+  "f94a313c-024d-4f1b-b0db-f69e68bbec331773118878550.mp4","mmexport1771774343198.mp4","mmexport1771774691687.mp4",
+  "mmexport1772277009059.mp4","mmexport1772635803311.mp4","mmexport1772638180980.mp4",
+  "mmexport1773018975229.mp4","mmexport1773118541080.mp4","mmexport1776574516381.mp4",
+  "mmexport1776659314912.mp4","mmexport1778051921851.mp4","mmexport1778066287001.mp4",
+  "mmexport1778137216465.mp4","mmexport1778137659759.mp4","mmexport1779081365850.mp4",
+  "mmexport1779261159208.mp4","mmexport1779974198974.mp4","mmexport1780285884542.mp4",
+  "mmexport1780285898559.mp4"
+];
+
+function getDateFromFile(name) {
+  const m = name.match(/(\d{4})(\d{2})(\d{2})/);
+  if (m) return `${m[1]}.${m[2]}.${m[3]}`;
+  return '';
+}
+
+function loadVideos() {
+  const grid = document.getElementById('videoGrid');
+  videoFiles.forEach(f => {
+    const d = document.createElement('div');
+    d.className = 'video-item';
+    const date = getDateFromFile(f);
+    d.innerHTML = `
+      <video preload="metadata" src="videos/${f}" muted playsinline></video>
+      <div class="play-btn">&#9654;</div>
+      <div class="duration"></div>
+      <div class="vdate">${date}</div>
+    `;
+    d.addEventListener('click', () => openVideo('videos/' + f));
+    grid.appendChild(d);
+
+    // Get duration
+    const v = d.querySelector('video');
+    v.onloadedmetadata = () => {
+      const m = Math.floor(v.duration / 60);
+      const s = Math.floor(v.duration % 60);
+      d.querySelector('.duration').textContent = `${m}:${String(s).padStart(2,'0')}`;
+    };
+  });
+
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.video-item').forEach(el => obs.observe(el));
+}
+loadVideos();
+
+// ===== Lightbox =====
+function openLB(src) {
+  document.getElementById('lbImg').src = src;
+  document.getElementById('lightbox').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+function closeLB() {
+  document.getElementById('lightbox').classList.remove('active');
+  document.getElementById('lbImg').src = '';
+  document.body.style.overflow = '';
+}
+
+// ===== Video Modal =====
+let currentVideo = null;
+function openVideo(src) {
+  const modal = document.getElementById('vmodal');
+  const video = document.getElementById('modalVideo');
+  video.src = src;
+  video.load();
+  modal.classList.add('active');
+  document.body.style.overflow = 'hidden';
+  video.play().catch(() => {});
+  currentVideo = video;
+}
+function closeVM() {
+  if (currentVideo) { currentVideo.pause(); currentVideo.src = ''; }
+  document.getElementById('vmodal').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+// ===== Keyboard =====
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { closeLB(); closeVM(); }
+});
+
+// ===== Letter reveal =====
+const letterObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); letterObs.unobserve(e.target); }
+  });
+}, { threshold: 0.4 });
+document.querySelectorAll('.letter-body p').forEach((p, i) => {
+  p.style.transitionDelay = `${i * 0.15}s`;
+  letterObs.observe(p);
+});
+</script>
+</body>
+</html>

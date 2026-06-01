@@ -1075,7 +1075,7 @@ footer .heart { color: #c08497; display: inline-block; animation: heartBeat 1.5s
 
 <!-- ===== Music Button ===== -->
 <button class="music-btn" id="musicBtn" onclick="toggleMusic()">♪</button>
-<audio id="bgMusic" loop preload="none"></audio>
+<audio id="bgMusic" preload="none"></audio>
 
 <!-- ===== LIGHTBOX ===== -->
 <div class="lightbox" id="lightbox">
@@ -1528,6 +1528,9 @@ letterObs.observe(document.getElementById('letter'));
 const bgAudio = document.getElementById('bgMusic');
 bgAudio.src = 'videos/青鸟飞鱼 - 此生不换.mp3';
 bgAudio.volume = 0.3;
+bgAudio.addEventListener('timeupdate', () => {
+  if (bgAudio.currentTime >= 132) bgAudio.pause();
+});
 let musicPlaying = false;
 function toggleMusic() {
   const btn = document.getElementById('musicBtn');

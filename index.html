@@ -71,6 +71,25 @@ body {
   100% { transform: scale(0); opacity: 0; }
 }
 
+/* ===== Mouse Pig ===== */
+.pig {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  font-size: 32px;
+  transform: translate(-50%, -50%);
+  transition: none;
+  filter: drop-shadow(0 2px 8px rgba(192,132,151,0.3));
+}
+.pig.bounce {
+  animation: pigBounce 0.6s ease infinite;
+}
+@keyframes pigBounce {
+  0%,100% { transform: translate(-50%, -50%) scale(1) rotate(0deg); }
+  25% { transform: translate(-50%, -55%) scale(1.05) rotate(-5deg); }
+  75% { transform: translate(-50%, -45%) scale(0.95) rotate(5deg); }
+}
+
 /* ===== Hero ===== */
 .hero {
   position: relative;
@@ -874,6 +893,7 @@ footer .heart { color: #c08497; display: inline-block; animation: heartBeat 1.5s
 <!-- ===== Falling Petals ===== -->
 <div id="petals"></div>
 <canvas id="fireworks-canvas"></canvas>
+<div class="pig" id="pig">🐷</div>
 
 <!-- ===== HERO ===== -->
 <section class="hero" id="hero">
@@ -1050,6 +1070,29 @@ document.addEventListener('mousemove', function(e) {
     setTimeout(() => s.remove(), 800);
   }, 50);
 });
+
+// ===== Mouse Pig =====
+const pig = document.getElementById('pig');
+let pigX = window.innerWidth / 2, pigY = window.innerHeight / 2;
+let mouseX = pigX, mouseY = pigY;
+let pigBounceTimer;
+
+document.addEventListener('mousemove', e => {
+  mouseX = e.clientX;
+  mouseY = e.clientY;
+  pig.classList.add('bounce');
+  clearTimeout(pigBounceTimer);
+  pigBounceTimer = setTimeout(() => pig.classList.remove('bounce'), 300);
+});
+
+function followPig() {
+  pigX += (mouseX - pigX) * 0.12;
+  pigY += (mouseY - pigY) * 0.12;
+  pig.style.left = pigX + 'px';
+  pig.style.top = pigY + 'px';
+  requestAnimationFrame(followPig);
+}
+followPig();
 
 // ===== Hero Slideshow =====
 const heroPhotos = [

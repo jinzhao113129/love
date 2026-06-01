@@ -105,29 +105,44 @@ body {
   position: relative;
   display: inline-block;
   text-align: center;
+  padding-bottom: 6px;
 }
 
 .pig-emoji {
   display: block;
-  font-size: 38px;
+  font-size: 40px;
   line-height: 1;
-  transform: translateY(0);
+  position: relative;
+  z-index: 2;
 }
 
-/* Legs container - sits below the emoji */
+/* Pink oval body below head */
+.pig-torso {
+  display: block;
+  width: 32px;
+  height: 20px;
+  background: linear-gradient(135deg, #fbc4cb, #f5a8b2);
+  border-radius: 50%;
+  margin: -4px auto 0;
+  position: relative;
+  z-index: 1;
+  box-shadow: inset -2px -2px 6px rgba(0,0,0,0.06);
+}
+
+/* Little legs at the bottom */
 .pig-leg {
   position: absolute;
   width: 8px;
   height: 7px;
   background: #f5a8b2;
   border-radius: 0 0 4px 4px;
-  bottom: -4px;
+  bottom: 0;
   transform-origin: top center;
 }
-.pig-leg.fl { left: 6px; }
-.pig-leg.fr { left: 17px; }
-.pig-leg.bl { right: 6px; }
-.pig-leg.br { right: 17px; }
+.pig-leg.fl { left: 3px; }
+.pig-leg.fr { left: 13px; }
+.pig-leg.bl { right: 3px; }
+.pig-leg.br { right: 13px; }
 
 /* Walk animation */
 .pig-inner.walk .pig-body {
@@ -984,6 +999,7 @@ footer .heart { color: #c08497; display: inline-block; animation: heartBeat 1.5s
   <span class="pig-inner" id="pigInner">
     <span class="pig-body">
       <span class="pig-emoji">🐷</span>
+      <span class="pig-torso"></span>
       <span class="pig-leg fl"></span>
       <span class="pig-leg fr"></span>
       <span class="pig-leg bl"></span>

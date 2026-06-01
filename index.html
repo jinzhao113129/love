@@ -1523,21 +1523,17 @@ const letterObs = new IntersectionObserver(entries => {
 letterObs.observe(document.getElementById('letter'));
 
 // ===== Music =====
+const bgAudio = document.getElementById('bgMusic');
+bgAudio.src = 'videos/青鸟飞鱼 - 此生不换.mp3';
 let musicPlaying = false;
 function toggleMusic() {
-  const audio = document.getElementById('bgMusic');
   const btn = document.getElementById('musicBtn');
   if (musicPlaying) {
-    audio.pause();
+    bgAudio.pause();
     btn.classList.remove('playing');
     btn.textContent = '♪';
   } else {
-    // If no source set, prompt user
-    if (!audio.src || audio.src === '') {
-      alert('请把背景音乐文件放到 videos/ 文件夹，然后在代码中设置音乐路径');
-      return;
-    }
-    audio.play().then(() => {
+    bgAudio.play().then(() => {
       btn.classList.add('playing');
       btn.textContent = '♫';
     }).catch(() => {});

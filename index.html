@@ -775,12 +775,107 @@ footer .heart { color: #c08497; display: inline-block; animation: heartBeat 1.5s
   .carousel-wrapper { height: 260px; }
   .carousel-card { width: 160px; height: 220px; }
 }
+/* ===== Fireworks Canvas ===== */
+#fireworks-canvas {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 9997;
+}
+
+/* ===== Love Quotes ===== */
+.quote-section {
+  background: linear-gradient(135deg, #0d0d1a 0%, #12102a 50%, #1a0d1a 100%);
+  background-size: 400% 400%;
+  animation: gradShift 20s ease infinite;
+}
+.quote-card {
+  max-width: 700px;
+  margin: 0 auto;
+  text-align: center;
+  padding: 50px 40px;
+  background: rgba(255,255,255,0.03);
+  border-radius: 20px;
+  border: 1px solid rgba(192,132,151,0.1);
+  position: relative;
+}
+.quote-card .quote-mark {
+  font-size: 4rem;
+  color: rgba(192,132,151,0.15);
+  position: absolute;
+  top: 10px; left: 20px;
+  font-family: Georgia, serif;
+  line-height: 1;
+}
+.quote-card .quote-text {
+  font-size: 1.3rem;
+  color: rgba(245,230,211,0.85);
+  line-height: 1.8;
+  margin-bottom: 15px;
+  min-height: 80px;
+  display: flex; align-items: center; justify-content: center;
+  font-style: italic; letter-spacing: 1px;
+}
+.quote-card .quote-from {
+  color: rgba(192,132,151,0.5);
+  font-size: 0.85rem; letter-spacing: 2px;
+}
+.quote-card .quote-refresh {
+  display: inline-block; margin-top: 15px;
+  color: rgba(192,132,151,0.4); font-size: 0.8rem;
+  cursor: pointer; transition: color 0.3s;
+  letter-spacing: 1px; background: none; border: none;
+}
+.quote-card .quote-refresh:hover { color: #c08497; }
+
+/* ===== Love Map ===== */
+.map-section {
+  background: linear-gradient(135deg, #12102a 0%, #0d0d1a 50%, #1a0d1a 100%);
+  background-size: 400% 400%;
+  animation: gradShift 18s ease infinite;
+}
+.map-container { max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; }
+.map-item {
+  display: flex; align-items: center; gap: 20px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(192,132,151,0.08);
+  border-radius: 16px; padding: 20px 25px;
+  opacity: 0; transform: translateX(-20px);
+  transition: all 0.6s ease;
+}
+.map-item.visible { opacity: 1; transform: translateX(0); }
+.map-item .pin {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #c08497, #e8a0b4);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.3rem; flex-shrink: 0;
+  box-shadow: 0 4px 15px rgba(192,132,151,0.3);
+}
+.map-item .info { flex: 1; }
+.map-item .info .place { font-size: 1.1rem; color: #fff; margin-bottom: 4px; }
+.map-item .info .desc { font-size: 0.85rem; color: rgba(245,230,211,0.5); letter-spacing: 1px; }
+.map-item .info .date { font-size: 0.75rem; color: rgba(192,132,151,0.5); margin-top: 4px; letter-spacing: 1px; }
+.map-item .status {
+  font-size: 0.7rem; padding: 4px 12px; border-radius: 12px;
+  letter-spacing: 1px; flex-shrink: 0;
+}
+.map-item .status.done { background: rgba(192,132,151,0.15); color: #c08497; border: 1px solid rgba(192,132,151,0.2); }
+.map-item .status.wish { background: rgba(255,255,255,0.05); color: rgba(245,230,211,0.4); border: 1px solid rgba(255,255,255,0.1); }
+
+@media (max-width: 768px) {
+  .map-item { flex-direction: row; padding: 15px; gap: 14px; }
+  .quote-card { padding: 30px 20px; }
+  .quote-card .quote-text { font-size: 1.1rem; }
+}
 </style>
 </head>
 <body>
 
 <!-- ===== Falling Petals ===== -->
 <div id="petals"></div>
+<canvas id="fireworks-canvas"></canvas>
 
 <!-- ===== HERO ===== -->
 <section class="hero" id="hero">
@@ -839,6 +934,29 @@ footer .heart { color: #c08497; display: inline-block; animation: heartBeat 1.5s
     <h2 class="section-title">日常<span class="accent">视频</span></h2>
     <p class="section-sub">— 和你在一起的每一天，都值得被记录 —</p>
     <div class="video-grid" id="videoGrid"></div>
+  </div>
+</section>
+
+<!-- ===== LOVE QUOTES ===== -->
+<section class="quote-section">
+  <div class="section">
+    <h2 class="section-title">每日<span class="accent">情话</span></h2>
+    <p class="section-sub">— 每一天，都有一些话想对你说 —</p>
+    <div class="quote-card">
+      <div class="quote-mark">"</div>
+      <div class="quote-text" id="quoteText">加载中...</div>
+      <div class="quote-from" id="quoteFrom"></div>
+      <button class="quote-refresh" onclick="newQuote()">换一句 ↻</button>
+    </div>
+  </div>
+</section>
+
+<!-- ===== LOVE MAP ===== -->
+<section class="map-section">
+  <div class="section">
+    <h2 class="section-title">我们的<span class="accent">足迹</span></h2>
+    <p class="section-sub">— 去过的地方，和想去的地方，都想和你一起 —</p>
+    <div class="map-container" id="mapContainer"></div>
   </div>
 </section>
 
@@ -1285,6 +1403,136 @@ document.addEventListener('keydown', e => {
   if (e.key === 'ArrowLeft' && document.getElementById('lightbox').classList.contains('active')) changeLB(-1);
   if (e.key === 'ArrowRight' && document.getElementById('lightbox').classList.contains('active')) changeLB(1);
 });
+// ===== Fireworks =====
+const fwCanvas = document.getElementById('fireworks-canvas');
+const fwCtx = fwCanvas.getContext('2d');
+let fwParticles = [];
+
+function resizeFW() {
+  fwCanvas.width = window.innerWidth;
+  fwCanvas.height = window.innerHeight;
+}
+resizeFW();
+window.addEventListener('resize', resizeFW);
+
+function createBurst(x, y) {
+  const colors = ['#c08497','#e8a0b4','#ff6b8a','#d4a0b0','#f5d0d0','#b07088','#ff9eb5','#fff'];
+  for (let i = 0; i < 50; i++) {
+    const angle = Math.random() * Math.PI * 2;
+    const speed = Math.random() * 4 + 2;
+    fwParticles.push({
+      x, y, color: colors[Math.floor(Math.random()*colors.length)],
+      vx: Math.cos(angle) * speed * (Math.random() * 0.5 + 0.5),
+      vy: Math.sin(angle) * speed * (Math.random() * 0.5 + 0.5),
+      life: 1, decay: Math.random() * 0.015 + 0.008,
+      size: Math.random() * 3 + 2, gravity: 0.04
+    });
+  }
+}
+
+function animateFW() {
+  fwCtx.clearRect(0, 0, fwCanvas.width, fwCanvas.height);
+  for (let i = fwParticles.length - 1; i >= 0; i--) {
+    const p = fwParticles[i];
+    p.x += p.vx; p.y += p.vy;
+    p.vy += p.gravity;
+    p.life -= p.decay;
+    if (p.life <= 0) { fwParticles.splice(i, 1); continue; }
+    fwCtx.globalAlpha = p.life;
+    fwCtx.fillStyle = p.color;
+    fwCtx.beginPath();
+    fwCtx.arc(p.x, p.y, p.size * p.life, 0, Math.PI * 2);
+    fwCtx.fill();
+  }
+  fwCtx.globalAlpha = 1;
+  requestAnimationFrame(animateFW);
+}
+animateFW();
+
+// Initial bursts on load
+setTimeout(() => {
+  createBurst(window.innerWidth * 0.3, window.innerHeight * 0.4);
+  createBurst(window.innerWidth * 0.7, window.innerHeight * 0.3);
+  createBurst(window.innerWidth * 0.5, window.innerHeight * 0.6);
+  setTimeout(() => {
+    createBurst(window.innerWidth * 0.2, window.innerHeight * 0.5);
+    createBurst(window.innerWidth * 0.8, window.innerHeight * 0.4);
+    createBurst(window.innerWidth * 0.5, window.innerHeight * 0.3);
+  }, 400);
+  setTimeout(() => {
+    createBurst(window.innerWidth * 0.4, window.innerHeight * 0.2);
+    createBurst(window.innerWidth * 0.6, window.innerHeight * 0.7);
+  }, 900);
+}, 500);
+
+// ===== Love Quotes =====
+const quotes = [
+  { text: "你是我这一生，只想遇见的美好。", from: "— 致田缘" },
+  { text: "这世间所有的美好，都不及你眉眼间的温柔。", from: "— 致田缘" },
+  { text: "遇见你之后，我就再也没看过别人。", from: "— 金朝" },
+  { text: "你是我的，谁都抢不走，我就是这么霸道。", from: "— 金朝" },
+  { text: "我不是在最好的时光遇见了你，而是遇见了你，才有了最好的时光。", from: "— 致田缘" },
+  { text: "喜欢你是件很麻烦的事，但我偏偏喜欢找麻烦。", from: "— 金朝" },
+  { text: "你的过去我来不及参与，你的未来我奉陪到底。", from: "— 金朝" },
+  { text: "世界再大，也大不过你在我心里的位置。", from: "— 致田缘" },
+  { text: "所有的晦暗都留给过往，从遇见你开始，凛冬散尽星河长明。", from: "— 致田缘" },
+  { text: "你是我无论何时想起，都会嘴角上扬的人。", from: "— 金朝" },
+  { text: "谢谢你让我知道，被一个人全心全意爱着是什么感觉。", from: "— 致田缘" },
+  { text: "以后你的生活里，不管酸甜苦辣，都有我陪着。", from: "— 金朝" },
+  { text: "我的心里只有你，装不下别人了。", from: "— 金朝" },
+  { text: "你是我平淡生活里最耀眼的光。", from: "— 致田缘" },
+  { text: "一辈子很长，但和你在一起，我觉得一辈子太短。", from: "— 金朝" },
+];
+
+let usedQuotes = [];
+function newQuote() {
+  const qText = document.getElementById('quoteText');
+  const qFrom = document.getElementById('quoteFrom');
+  if (usedQuotes.length >= quotes.length) usedQuotes = [];
+  let idx;
+  do { idx = Math.floor(Math.random() * quotes.length); } while (usedQuotes.includes(idx));
+  usedQuotes.push(idx);
+  qText.style.opacity = '0';
+  setTimeout(() => {
+    qText.textContent = quotes[idx].text;
+    qFrom.textContent = quotes[idx].from;
+    qText.style.opacity = '1';
+  }, 300);
+}
+newQuote();
+
+// ===== Love Map =====
+const places = [
+  { emoji: '🌊', place: '青岛', desc: '一起去海边吹风', date: '已打卡', status: 'done' },
+  { emoji: '🏖️', place: '威海', desc: '干净又浪漫的城市', date: '已打卡', status: 'done' },
+  { emoji: '🏛️', place: '天津', desc: '一起走过的街道', date: '已打卡', status: 'done' },
+  { emoji: '🏭', place: '唐山', desc: '我们的足迹', date: '已打卡', status: 'done' },
+  { emoji: '🏯', place: '北京', desc: '首都的记忆', date: '已打卡', status: 'done' },
+  { emoji: '💑', place: '更多地方', desc: '以后还要一起去很多地方', date: '未来计划', status: 'wish' },
+];
+
+function renderMap() {
+  const container = document.getElementById('mapContainer');
+  places.forEach((p, i) => {
+    const item = document.createElement('div');
+    item.className = 'map-item';
+    item.innerHTML = `
+      <div class="pin">${p.emoji}</div>
+      <div class="info">
+        <div class="place">${p.place}</div>
+        <div class="desc">${p.desc}</div>
+        <div class="date">${p.date}</div>
+      </div>
+      <div class="status ${p.status}">${p.status === 'done' ? '已去过' : '想去'}</div>
+    `;
+    container.appendChild(item);
+  });
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+  }, { threshold: 0.2 });
+  document.querySelectorAll('.map-item').forEach(el => obs.observe(el));
+}
+renderMap();
 </script>
 </body>
 </html>

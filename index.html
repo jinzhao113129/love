@@ -335,6 +335,7 @@ body {
   display: block;
   border-radius: 12px;
   transition: transform 0.6s;
+  image-orientation: from-image;
 }
 .her-grid .item:hover img { transform: scale(1.06); }
 .her-grid .item .overlay {
@@ -455,6 +456,7 @@ body {
   object-fit: cover;
   display: block;
   transition: transform 0.6s;
+  image-orientation: from-image;
 }
 .couple-grid .item:hover img { transform: scale(1.07); }
 .couple-grid .item .overlay {
@@ -1525,6 +1527,7 @@ letterObs.observe(document.getElementById('letter'));
 // ===== Music =====
 const bgAudio = document.getElementById('bgMusic');
 bgAudio.src = 'videos/青鸟飞鱼 - 此生不换.mp3';
+bgAudio.volume = 0.3;
 let musicPlaying = false;
 function toggleMusic() {
   const btn = document.getElementById('musicBtn');

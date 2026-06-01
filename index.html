@@ -231,57 +231,12 @@ body {
   letter-spacing: 3px;
 }
 
-/* ===== Her Gallery (Masonry) ===== */
-.her-section {
-  background: linear-gradient(135deg, #0d0d1a 0%, #12102a 50%, #0d0d1a 100%);
-  background-size: 400% 400%;
-  animation: gradShift 15s ease infinite;
-}
+/* ===== 3D Carousel ===== */
 @keyframes gradShift {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 }
-.her-grid {
-  columns: 4;
-  column-gap: 14px;
-  padding: 0 10px;
-}
-.her-grid .item {
-  break-inside: avoid;
-  margin-bottom: 14px;
-  border-radius: 12px;
-  overflow: hidden;
-  cursor: pointer;
-  opacity: 0;
-  transform: translateY(30px);
-  transition: all 0.6s ease;
-  position: relative;
-}
-.her-grid .item.visible { opacity: 1; transform: translateY(0); }
-.her-grid .item:nth-child(2n) { transition-delay: 0.1s; }
-.her-grid .item:nth-child(3n) { transition-delay: 0.2s; }
-.her-grid .item img {
-  width: 100%;
-  display: block;
-  border-radius: 12px;
-  transition: transform 0.6s;
-}
-.her-grid .item:hover img { transform: scale(1.06); }
-.her-grid .item .overlay {
-  position: absolute;
-  bottom: 0; left: 0; right: 0;
-  padding: 30px 15px 15px;
-  background: linear-gradient(transparent, rgba(0,0,0,0.6));
-  opacity: 0;
-  transition: opacity 0.3s;
-  color: #fff;
-  font-size: 0.8rem;
-  letter-spacing: 1px;
-}
-.her-grid .item:hover .overlay { opacity: 1; }
-
-/* ===== 3D Carousel Section ===== */
 .carousel-section {
   background: linear-gradient(135deg, #12102a 0%, #1a0d1a 50%, #12102a 100%);
   background-size: 400% 400%;
@@ -748,8 +703,6 @@ footer .heart { color: #c08497; display: inline-block; animation: heartBeat 1.5s
   .hero-sub { font-size: 0.8rem; letter-spacing: 4px; }
   .hero-name { font-size: 1rem; letter-spacing: 6px; }
   .hero-days span { font-size: 1.7rem; }
-  .her-grid { columns: 2; column-gap: 10px; }
-  .her-grid .item { margin-bottom: 10px; }
   .section-title { font-size: 1.7rem; }
   .section { padding: 60px 15px; }
   .letter-card { padding: 30px 20px; margin: 0 10px; }
@@ -768,7 +721,6 @@ footer .heart { color: #c08497; display: inline-block; animation: heartBeat 1.5s
   .hero-badge { font-size: 0.7rem; padding: 4px 12px; }
 }
 @media (max-width: 480px) {
-  .her-grid { columns: 2; }
   .couple-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
   .couple-grid .item img { height: 160px; }
   .video-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
@@ -894,22 +846,15 @@ footer .heart { color: #c08497; display: inline-block; animation: heartBeat 1.5s
       <span class="hero-badge">✨  love</span>
     </div>
   </div>
-  <a class="scroll-down" href="#her">⌄</a>
+  <a class="scroll-down" href="#carousel">⌄</a>
 </section>
 
-<!-- ===== HER GALLERY ===== -->
-<section class="her-section" id="her">
-  <div class="section">
-    <h2 class="section-title">她的<span class="accent">美丽</span></h2>
-    <p class="section-sub">— 你永远是我眼中最美的风景 —</p>
-    <div class="her-grid" id="herGrid"></div>
-  </div>
-</section>
+<!-- ===== (her gallery section removed) ===== -->
 
 <!-- ===== 3D CAROUSEL ===== -->
 <section class="carousel-section" id="carousel">
   <div class="section">
-    <h2 class="section-title">最爱的<span class="accent">瞬间</span></h2>
+    <h2 class="section-title">我们的<span class="accent">瞬间</span></h2>
     <p class="section-sub">— 每一张都是我最珍藏的画面 —</p>
     <div class="carousel-wrapper">
       <button class="carousel-btn prev" onclick="rotateCarousel(-1)">‹</button>
@@ -1055,11 +1000,11 @@ document.addEventListener('mousemove', function(e) {
 
 // ===== Hero Slideshow =====
 const heroPhotos = [
-  "photos/her/mmexport1773504704774.jpg",
-  "photos/her/mmexport1773748114454.jpg",
-  "photos/her/mmexport1773146204969.jpg",
-  "photos/her/mmexport1773638794485.jpg",
-  "photos/her/mmexport1767107720815.jpg",
+  "photos/couple/IMG_20260222_203633.jpg",
+  "photos/couple/mmexport1778339351297.jpg",
+  "photos/couple/mmexport1772646416354.jpg",
+  "photos/couple/mmexport1772126618745.jpg",
+  "photos/couple/mmexport1772126842131.jpg",
 ];
 let heroIdx = 0;
 const heroBg = document.getElementById('heroBg');
@@ -1124,34 +1069,16 @@ function createObserver(selector, options = { threshold: 0.1 }) {
   document.querySelectorAll(selector).forEach(el => obs.observe(el));
 }
 
-// ===== Her Photos =====
-const herFiles = [
-  "mmexport1767107640891.jpg","mmexport1767107662711.jpg","mmexport1767107720815.jpg",
-  "mmexport1769014829744.jpg","mmexport1769014832051.jpg","mmexport1769014930676.jpg",
-  "mmexport1769014932666.jpg","mmexport1769014937271.jpg","mmexport1769014939592.jpg",
-  "mmexport1769014972830.jpg","mmexport1769014976861.jpg","mmexport1769014990295.jpg",
-  "mmexport1769015005922.jpg","mmexport1773146204969.jpg","mmexport1773232623853.jpg",
-  "mmexport1773232629515.jpg","mmexport1773504704774.jpg","mmexport1773638794485.jpg",
-  "mmexport1773748114454.jpg","mmexport1777620303321.jpg","mmexport1777620352986.jpg",
-  "mmexport1777620361572.jpg","mmexport1778168770398.jpg","mmexport1779277199079.jpg"
-];
-const allHer = herFiles.map(f => ({ src: `photos/her/${f}`, type: 'her' }));
-
-herFiles.forEach(f => {
-  const d = document.createElement('div');
-  d.className = 'item';
-  d.innerHTML = `<img src="photos/her/${f}" alt="" loading="lazy" onclick="openLB('photos/her/${f}')">`;
-  document.getElementById('herGrid').appendChild(d);
-});
-createObserver('.her-grid .item');
+// ===== Her Photos (all removed) =====
+const allHer = [];
 
 // ===== 3D Carousel =====
 const carouselPicks = [
-  "mmexport1773146204969.jpg","mmexport1773748114454.jpg",
-  "mmexport1773504704774.jpg","mmexport1767107720815.jpg",
-  "mmexport1767107662711.jpg","mmexport1773638794485.jpg",
-  "mmexport1777620303321.jpg","mmexport1778168770398.jpg",
-  "mmexport1767107640891.jpg","mmexport1777620361572.jpg",
+  "IMG_20260222_203633.jpg","mmexport1768232802157.jpg",
+  "mmexport1770185303289.jpg","mmexport1770185316072.jpg",
+  "mmexport1770225882137.jpg","mmexport1771827055750.jpg",
+  "mmexport1772126618745.jpg","mmexport1772126842131.jpg",
+  "mmexport1772212477157.jpg","mmexport1772219820066.jpg",
 ];
 let carouselAngle = 0;
 const radius = 380;
@@ -1162,8 +1089,8 @@ function renderCarousel() {
   carouselPicks.forEach((f, i) => {
     const card = document.createElement('div');
     card.className = 'carousel-card';
-    card.onclick = () => openLB(`photos/her/${f}`);
-    card.innerHTML = `<img src="photos/her/${f}" alt="" loading="lazy"><div class="label">最爱的你</div>`;
+    card.onclick = () => openLB(`photos/couple/${f}`);
+    card.innerHTML = `<img src="photos/couple/${f}" alt="" loading="lazy"><div class="label">我们的回忆</div>`;
     track.appendChild(card);
   });
   updateCarousel();
@@ -1202,12 +1129,11 @@ const coupleFiles = [
   "mmexport1772126618745.jpg","mmexport1772126842131.jpg","mmexport1772126848369.jpg",
   "mmexport1772212477157.jpg","mmexport1772219820066.jpg","IMG_20260304_203219.jpg",
   "IMG_20260304_203306.jpg","mmexport1772646416354.jpg","mmexport1772646420142.jpg",
-  "mmexport1772646439603.jpg","mmexport1772646443334.jpg","mmexport1773313670466.jpg",
-  "mmexport1773313679866.jpg","mmexport1778339351297.jpg","mmexport1778339354736.jpg",
+  "mmexport1772646439603.jpg","mmexport1772646443334.jpg",
+  "mmexport1778339351297.jpg","mmexport1778339354736.jpg",
   "mmexport1778339359591.jpg","mmexport1778339363252.jpg","mmexport1778339366271.jpg",
   "mmexport1778339369960.jpg","mmexport1778339376689.jpg","mmexport1778339383211.jpg",
-  "mmexport1778339391267.jpg","mmexport1778394133516.jpg","mmexport1778394170078.jpg",
-  "mmexport1778394174351.jpg"
+  "mmexport1778339391267.jpg","mmexport1778394170078.jpg"
 ];
 const allCouple = coupleFiles.map(f => ({ src: `photos/couple/${f}`, type: 'couple' }));
 

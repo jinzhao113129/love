@@ -81,13 +81,12 @@ body {
 }
 .pig .pig-inner {
   display: inline-block;
-  font-size: 36px;
   transform: translate(-50%, -50%);
   transition: none;
 }
 .pig .pig-react {
   position: absolute;
-  top: -24px;
+  top: -30px;
   left: 50%;
   transform: translateX(-50%);
   font-size: 14px;
@@ -100,30 +99,190 @@ body {
   opacity: 1;
   transform: translateX(-50%) translateY(-8px);
 }
-.pig .pig-inner.walk {
-  animation: pigWalk 0.4s ease-in-out infinite alternate;
+
+/* ===== Pig Body ===== */
+.pig-body {
+  position: relative;
+  display: block;
+  width: 44px;
+  height: 36px;
+  background: linear-gradient(135deg, #fbc4cb, #f5a8b2);
+  border-radius: 50%;
+  box-shadow: inset -3px -3px 8px rgba(0,0,0,0.06), inset 3px 3px 8px rgba(255,255,255,0.3);
 }
-.pig .pig-inner.happy {
-  animation: pigHappy 0.6s ease infinite;
+
+/* Ears */
+.pig-ear {
+  position: absolute;
+  width: 12px;
+  height: 10px;
+  background: #f5a8b2;
+  border-radius: 50% 50% 30% 30%;
+  top: -5px;
 }
-.pig .pig-inner.startled {
-  animation: pigStartle 0.5s ease;
+.pig-ear.left { left: 6px; transform: rotate(-18deg); }
+.pig-ear.right { right: 6px; transform: rotate(18deg); }
+.pig-ear::after {
+  content: '';
+  position: absolute;
+  width: 6px;
+  height: 5px;
+  background: #e894a0;
+  border-radius: 50%;
+  top: 3px;
+  left: 3px;
 }
-@keyframes pigWalk {
-  0% { transform: translate(-50%, -50%) translateY(0); }
-  100% { transform: translate(-50%, -50%) translateY(-5px); }
+
+/* Face */
+.pig-face {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Eyes */
+.pig-eye {
+  position: absolute;
+  width: 4px;
+  height: 5px;
+  background: #3d2b2f;
+  border-radius: 50%;
+  top: 12px;
+}
+.pig-eye.left { left: 12px; }
+.pig-eye.right { right: 12px; }
+.pig-eye::after {
+  content: '';
+  position: absolute;
+  width: 1.5px;
+  height: 1.5px;
+  background: #fff;
+  border-radius: 50%;
+  top: 1px;
+  left: 2px;
+}
+
+/* Snout */
+.pig-snout {
+  position: absolute;
+  width: 16px;
+  height: 10px;
+  background: #e894a0;
+  border-radius: 50%;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  box-shadow: inset 0 -1px 3px rgba(0,0,0,0.05);
+}
+.pig-nostril {
+  position: absolute;
+  width: 2.5px;
+  height: 4px;
+  background: #c97a86;
+  border-radius: 50%;
+  top: 3px;
+}
+.pig-nostril.left { left: 4px; }
+.pig-nostril.right { right: 4px; }
+
+/* Blush */
+.pig-face::before {
+  content: '';
+  position: absolute;
+  width: 6px;
+  height: 4px;
+  background: rgba(255,150,150,0.25);
+  border-radius: 50%;
+  top: 17px; left: 5px;
+}
+.pig-face::after {
+  content: '';
+  position: absolute;
+  width: 6px;
+  height: 4px;
+  background: rgba(255,150,150,0.25);
+  border-radius: 50%;
+  top: 17px; right: 5px;
+}
+
+/* Legs */
+.pig-leg {
+  position: absolute;
+  width: 8px;
+  height: 9px;
+  background: #f5a8b2;
+  border-radius: 3px;
+  bottom: -5px;
+  transform-origin: top center;
+  box-shadow: inset -1px -1px 3px rgba(0,0,0,0.05);
+}
+.pig-leg.fl { left: 7px; }
+.pig-leg.fr { left: 18px; }
+.pig-leg.bl { right: 7px; }
+.pig-leg.br { right: 18px; }
+
+/* Tail */
+.pig-tail {
+  position: absolute;
+  right: -5px;
+  top: 11px;
+  width: 9px;
+  height: 9px;
+  border: 2px solid #f5a8b2;
+  border-color: #f5a8b2 transparent transparent transparent;
+  border-radius: 50%;
+  transform: rotate(25deg);
+}
+
+/* Walk animation - alternating legs */
+.pig-inner.walk .pig-leg.fl,
+.pig-inner.walk .pig-leg.br {
+  animation: legGo 0.25s ease-in-out infinite alternate;
+}
+.pig-inner.walk .pig-leg.fr,
+.pig-inner.walk .pig-leg.bl {
+  animation: legBack 0.25s ease-in-out infinite alternate;
+}
+@keyframes legGo {
+  0% { transform: rotate(-18deg); }
+  100% { transform: rotate(18deg); }
+}
+@keyframes legBack {
+  0% { transform: rotate(18deg); }
+  100% { transform: rotate(-18deg); }
+}
+/* Whole body bob when walking */
+.pig-inner.walk .pig-body {
+  animation: pigBob 0.25s ease-in-out infinite alternate;
+}
+@keyframes pigBob {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-3px); }
+}
+
+/* Happy spin */
+.pig-inner.happy .pig-body {
+  animation: pigHappy 0.6s ease;
 }
 @keyframes pigHappy {
-  0%,100% { transform: translate(-50%, -50%) scale(1) rotate(0deg); }
-  25% { transform: translate(-50%, -55%) scale(1.1) rotate(-8deg); }
-  50% { transform: translate(-50%, -50%) scale(1) rotate(0deg); }
-  75% { transform: translate(-50%, -55%) scale(1.1) rotate(8deg); }
+  0% { transform: scale(1) rotate(0deg); }
+  25% { transform: scale(1.15) rotate(-10deg); }
+  50% { transform: scale(1) rotate(0deg); }
+  75% { transform: scale(1.15) rotate(10deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+
+/* Startled jump */
+.pig-inner.startled .pig-body {
+  animation: pigStartle 0.5s ease;
 }
 @keyframes pigStartle {
-  0% { transform: translate(-50%, -50%) scale(1); }
-  30% { transform: translate(-50%, -60%) scale(1.3); }
-  60% { transform: translate(-50%, -45%) scale(0.85); }
-  100% { transform: translate(-50%, -50%) scale(1); }
+  0% { transform: scale(1); }
+  30% { transform: scale(1.25) translateY(-10px); }
+  60% { transform: scale(0.85) translateY(3px); }
+  100% { transform: scale(1) translateY(0); }
 }
 
 /* ===== Hero ===== */
@@ -929,7 +1088,28 @@ footer .heart { color: #c08497; display: inline-block; animation: heartBeat 1.5s
 <!-- ===== Falling Petals ===== -->
 <div id="petals"></div>
 <canvas id="fireworks-canvas"></canvas>
-<div class="pig" id="pig"><span class="pig-inner" id="pigInner">🐷</span><span class="pig-react" id="pigReact"></span></div>
+<div class="pig" id="pig">
+  <span class="pig-inner" id="pigInner">
+    <span class="pig-body">
+      <span class="pig-ear left"></span>
+      <span class="pig-ear right"></span>
+      <span class="pig-face">
+        <span class="pig-eye left"></span>
+        <span class="pig-eye right"></span>
+        <span class="pig-snout">
+          <span class="pig-nostril left"></span>
+          <span class="pig-nostril right"></span>
+        </span>
+      </span>
+      <span class="pig-leg fl"></span>
+      <span class="pig-leg fr"></span>
+      <span class="pig-leg bl"></span>
+      <span class="pig-leg br"></span>
+      <span class="pig-tail"></span>
+    </span>
+  </span>
+  <span class="pig-react" id="pigReact"></span>
+</div>
 
 <!-- ===== HERO ===== -->
 <section class="hero" id="hero">
@@ -1144,11 +1324,11 @@ function followPig() {
   const dx = mouseX - pigX, dy = mouseY - pigY;
   const dist = Math.sqrt(dx*dx + dy*dy);
 
-  if (dist > 8) {
-    pigX += dx * 0.04;
-    pigY += dy * 0.04;
+  if (dist > 10) {
+    pigX += dx * 0.025;
+    pigY += dy * 0.025;
     if (!pigWalking) { pigWalking = true; pigInner.classList.add('walk'); }
-    if (dist < 50 && Math.random() < 0.02) pigShowReaction('💕');
+    if (dist < 60 && Math.random() < 0.015) pigShowReaction('💕');
   } else {
     if (pigWalking) { pigWalking = false; pigInner.classList.remove('walk'); }
   }

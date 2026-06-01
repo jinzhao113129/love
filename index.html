@@ -76,18 +76,54 @@ body {
   position: fixed;
   pointer-events: none;
   z-index: 9999;
-  font-size: 32px;
+  transition: none;
+  filter: drop-shadow(0 3px 10px rgba(192,132,151,0.25));
+}
+.pig .pig-inner {
+  display: inline-block;
+  font-size: 36px;
   transform: translate(-50%, -50%);
   transition: none;
-  filter: drop-shadow(0 2px 8px rgba(192,132,151,0.3));
 }
-.pig.bounce {
-  animation: pigBounce 0.6s ease infinite;
+.pig .pig-react {
+  position: absolute;
+  top: -24px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 14px;
+  opacity: 0;
+  transition: opacity 0.3s, transform 0.3s;
+  pointer-events: none;
+  white-space: nowrap;
 }
-@keyframes pigBounce {
+.pig .pig-react.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(-8px);
+}
+.pig .pig-inner.walk {
+  animation: pigWalk 0.4s ease-in-out infinite alternate;
+}
+.pig .pig-inner.happy {
+  animation: pigHappy 0.6s ease infinite;
+}
+.pig .pig-inner.startled {
+  animation: pigStartle 0.5s ease;
+}
+@keyframes pigWalk {
+  0% { transform: translate(-50%, -50%) translateY(0); }
+  100% { transform: translate(-50%, -50%) translateY(-5px); }
+}
+@keyframes pigHappy {
   0%,100% { transform: translate(-50%, -50%) scale(1) rotate(0deg); }
-  25% { transform: translate(-50%, -55%) scale(1.05) rotate(-5deg); }
-  75% { transform: translate(-50%, -45%) scale(0.95) rotate(5deg); }
+  25% { transform: translate(-50%, -55%) scale(1.1) rotate(-8deg); }
+  50% { transform: translate(-50%, -50%) scale(1) rotate(0deg); }
+  75% { transform: translate(-50%, -55%) scale(1.1) rotate(8deg); }
+}
+@keyframes pigStartle {
+  0% { transform: translate(-50%, -50%) scale(1); }
+  30% { transform: translate(-50%, -60%) scale(1.3); }
+  60% { transform: translate(-50%, -45%) scale(0.85); }
+  100% { transform: translate(-50%, -50%) scale(1); }
 }
 
 /* ===== Hero ===== */
@@ -893,7 +929,7 @@ footer .heart { color: #c08497; display: inline-block; animation: heartBeat 1.5s
 <!-- ===== Falling Petals ===== -->
 <div id="petals"></div>
 <canvas id="fireworks-canvas"></canvas>
-<div class="pig" id="pig">🐷</div>
+<div class="pig" id="pig"><span class="pig-inner" id="pigInner">🐷</span><span class="pig-react" id="pigReact"></span></div>
 
 <!-- ===== HERO ===== -->
 <section class="hero" id="hero">
@@ -1073,21 +1109,53 @@ document.addEventListener('mousemove', function(e) {
 
 // ===== Mouse Pig =====
 const pig = document.getElementById('pig');
+const pigInner = document.getElementById('pigInner');
+const pigReact = document.getElementById('pigReact');
 let pigX = window.innerWidth / 2, pigY = window.innerHeight / 2;
 let mouseX = pigX, mouseY = pigY;
-let pigBounceTimer;
+let pigWalking = false, pigReactionTimer;
 
-document.addEventListener('mousemove', e => {
-  mouseX = e.clientX;
-  mouseY = e.clientY;
-  pig.classList.add('bounce');
-  clearTimeout(pigBounceTimer);
-  pigBounceTimer = setTimeout(() => pig.classList.remove('bounce'), 300);
+function pigShowReaction(text) {
+  pigReact.textContent = text;
+  pigReact.classList.add('show');
+  clearTimeout(pigReactionTimer);
+  pigReactionTimer = setTimeout(() => pigReact.classList.remove('show'), 1400);
+}
+
+document.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; });
+
+// Click interaction
+document.addEventListener('click', e => {
+  const dx = pigX - e.clientX, dy = pigY - e.clientY;
+  const dist = Math.sqrt(dx*dx + dy*dy);
+  pigInner.classList.remove('walk', 'happy');
+  if (dist < 120) {
+    pigInner.classList.add('startled');
+    pigShowReaction('😱💦');
+    setTimeout(() => pigInner.classList.remove('startled'), 500);
+  } else {
+    pigInner.classList.add('happy');
+    pigShowReaction('😊❤️');
+    setTimeout(() => pigInner.classList.remove('happy'), 600);
+  }
 });
 
 function followPig() {
-  pigX += (mouseX - pigX) * 0.12;
-  pigY += (mouseY - pigY) * 0.12;
+  const dx = mouseX - pigX, dy = mouseY - pigY;
+  const dist = Math.sqrt(dx*dx + dy*dy);
+
+  if (dist > 8) {
+    pigX += dx * 0.04;
+    pigY += dy * 0.04;
+    if (!pigWalking) { pigWalking = true; pigInner.classList.add('walk'); }
+    if (dist < 50 && Math.random() < 0.02) pigShowReaction('💕');
+  } else {
+    if (pigWalking) { pigWalking = false; pigInner.classList.remove('walk'); }
+  }
+
+  // Flip direction
+  pig.style.transform = dx > 0 ? 'scaleX(1)' : 'scaleX(-1)';
+
   pig.style.left = pigX + 'px';
   pig.style.top = pigY + 'px';
   requestAnimationFrame(followPig);

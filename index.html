@@ -1275,7 +1275,7 @@ const allHer = herFiles.map(f => ({ src: `photos/her/${f}`, type: 'her' }));
 herFiles.forEach(f => {
   const d = document.createElement('div');
   d.className = 'item';
-  d.innerHTML = `<img src="photos/her/${f}" alt="" loading="lazy" onclick="openLB('photos/her/${f}')">`;
+  d.innerHTML = `<img src="photos/her/${f}" alt="" loading="lazy" decoding="async" onclick="openLB('photos/her/${f}')">`;
   document.getElementById('herGrid').appendChild(d);
 });
 createObserver('.her-grid .item');
@@ -1348,7 +1348,7 @@ const allCouple = coupleFiles.map(f => ({ src: `photos/couple/${f}`, type: 'coup
 coupleFiles.forEach(f => {
   const d = document.createElement('div');
   d.className = 'item';
-  d.innerHTML = `<img src="photos/couple/${f}" alt="" loading="lazy" onclick="openLB('photos/couple/${f}')">`;
+  d.innerHTML = `<img src="photos/couple/${f}" alt="" loading="lazy" decoding="async" onclick="openLB('photos/couple/${f}')">`;
   document.getElementById('coupleGrid').appendChild(d);
 });
 createObserver('.couple-grid .item');
@@ -1411,25 +1411,39 @@ function getDateFromFile(name) {
 }
 
 const grid = document.getElementById('videoGrid');
-videoFiles.forEach(f => {
+videoFiles.forEach((f, idx) => {
   const d = document.createElement('div');
   d.className = 'video-item';
   const date = getDateFromFile(f);
   d.innerHTML = `
-    <video preload="metadata" src="videos/${f}" muted playsinline></video>
+    <video preload="none" src="videos/${f}" muted playsinline></video>
     <div class="play-btn">&#9654;</div>
     <div class="duration"></div>
     <div class="vdate">${date}</div>
   `;
   d.addEventListener('click', () => openVideo('videos/' + f));
   grid.appendChild(d);
-  const v = d.querySelector('video');
-  v.onloadedmetadata = () => {
-    const m = Math.floor(v.duration / 60);
-    const s = Math.floor(v.duration % 60);
-    d.querySelector('.duration').textContent = `${m}:${String(s).padStart(2,'0')}`;
-  };
 });
+
+// Lazy load video metadata - only for videos near viewport
+const videoObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const v = e.target.querySelector('video');
+      if (v && v.preload !== 'metadata') {
+        v.preload = 'metadata';
+        v.onloadedmetadata = () => {
+          const m = Math.floor(v.duration / 60);
+          const s = Math.floor(v.duration % 60);
+          e.target.querySelector('.duration').textContent = `${m}:${String(s).padStart(2,'0')}`;
+        };
+      }
+      videoObs.unobserve(e.target);
+    }
+  });
+}, { rootMargin: '200px' });
+
+document.querySelectorAll('.video-item').forEach(el => videoObs.observe(el));
 createObserver('.video-item');
 
 // ===== Video Modal =====

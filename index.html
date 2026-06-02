@@ -1543,9 +1543,10 @@ const videoObs = new IntersectionObserver(entries => {
           const m = Math.floor(v.duration / 60);
           const s = Math.floor(v.duration % 60);
           e.target.querySelector('.duration').textContent = `${m}:${String(s).padStart(2,'0')}`;
-          // Seek to first frame to show video cover on mobile
-          v.currentTime = 0.1;
-          v.play().then(() => { v.pause(); }).catch(() => {});
+          // Seek to a keyframe to show video poster on mobile
+          v.currentTime = Math.min(1, v.duration * 0.1);
+          v.onseeked = () => { v.pause(); };
+          v.play().catch(() => {});
         };
       }
       videoObs.unobserve(e.target);

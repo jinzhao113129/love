@@ -470,6 +470,9 @@ body {
   font-size: 0.85rem;
 }
 .couple-grid .item:hover .overlay { opacity: 1; }
+.gift-section {
+  background: linear-gradient(135deg, #0d0d1a 0%, #1a1025 50%, #0d0d1a 100%);
+}
 .couple-grid .item.landscape img {
   object-fit: contain;
   background: rgba(0,0,0,0.3);
@@ -1061,6 +1064,15 @@ footer .heart { color: #c08497; display: inline-block; animation: heartBeat 1.5s
   </div>
 </section>
 
+<!-- ===== GIFTS ===== -->
+<section class="gift-section" id="gifts">
+  <div class="section">
+    <h2 class="section-title">我们一起的<span class="accent">礼物</span></h2>
+    <p class="section-sub">— 每一份礼物都是我们爱的见证 —</p>
+    <div class="couple-grid" id="giftGrid"></div>
+  </div>
+</section>
+
 <!-- ===== FOOD ===== -->
 <section class="food-section" id="food">
   <div class="section">
@@ -1419,7 +1431,6 @@ const coupleFiles = [
   "47b09ebfba42c4dc012e31400f1fe058.jpg","70f660960d6c78b928ba2e6748a1496c.jpg"
 ];
 const allCouple = coupleFiles.map(f => ({ src: `photos/couple/${f}`, type: 'couple' }));
-const allGiftCouple = giftCoupleFiles.map(f => ({ src: `photos/gifts/${f}`, type: 'couple' }));
 
 coupleFiles.forEach(f => {
   const d = document.createElement('div');
@@ -1446,10 +1457,7 @@ let lbIdx = 0;
 
 // Build combined lightbox list
 function buildLBList() {
-  lbItems = [...allHer, ...allCouple, ...allGiftCouple,
-    ...foodFiles.map(f => ({ src: `photos/food/${f}`, type: 'food' })),
-    ...sceneryFiles.map(f => ({ src: `photos/scenery/${f}`, type: 'scenery' }))
-  ];
+  lbItems = [...allHer, ...allCouple];
 }
 buildLBList();
 
@@ -1536,21 +1544,23 @@ const videoObs = new IntersectionObserver(entries => {
 document.querySelectorAll('.video-item').forEach(el => videoObs.observe(el));
 createObserver('.video-item');
 
-// ===== Gifts (shown as couple photos) =====
-const giftCoupleFiles = [
+// ===== Gifts =====
+const giftFiles = [
   "IMG_20260116_224106.jpg","mmexport1777212990304.jpg","mmexport1777214128321.jpg",
   "mmexport1778373376924.jpg","mmexport1778373411503.jpg","mmexport1779273529373.jpg",
   "wx_camera_1778382741793.jpg"
 ];
-giftCoupleFiles.forEach(f => {
+giftFiles.forEach(f => {
   const d = document.createElement('div'); d.className = 'item';
   const img = document.createElement('img');
   img.src = `photos/gifts/${f}`; img.alt = ''; img.loading = 'lazy'; img.decoding = 'async';
   img.addEventListener('load', function() { if (this.naturalWidth > this.naturalHeight) this.closest('.item').classList.add('landscape'); });
   img.addEventListener('click', () => openLB(`photos/gifts/${f}`));
-  d.appendChild(img);
-  document.getElementById('coupleGrid').appendChild(d);
+  d.appendChild(img); document.getElementById('giftGrid').appendChild(d);
 });
+document.querySelectorAll('#giftGrid .item').forEach(el => { el.classList.add('visible'); });
+// Add gifts to lightbox
+giftFiles.forEach(f => lbItems.push({ src: `photos/gifts/${f}`, type: 'gift' }));
 
 // ===== Food =====
 const foodFiles = [
@@ -1567,6 +1577,7 @@ foodFiles.forEach(f => {
   d.appendChild(img); document.getElementById('foodGrid').appendChild(d);
 });
 createObserver('.food-grid .item');
+foodFiles.forEach(f => lbItems.push({ src: `photos/food/${f}`, type: 'food' }));
 
 // ===== Scenery =====
 const sceneryFiles = [
@@ -1588,6 +1599,7 @@ sceneryFiles.forEach(f => {
   d.appendChild(img); document.getElementById('sceneryGrid').appendChild(d);
 });
 createObserver('.scenery-grid .item');
+sceneryFiles.forEach(f => lbItems.push({ src: `photos/scenery/${f}`, type: 'scenery' }));
 
 // ===== Video Modal =====
 let currentVideo = null;

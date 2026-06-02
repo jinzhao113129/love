@@ -537,7 +537,15 @@ body {
   transition: all 0.5s ease;
   position: relative;
   aspect-ratio: 9/16;
-  background: #000;
+  background: linear-gradient(160deg, #1a1025, #0d0d1a 40%, #1a0d1a 70%, #25101a);
+}
+.video-item::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, rgba(192,132,151,0.08), transparent 70%);
+  pointer-events: none;
+  z-index: 0;
 }
 .video-item.visible { opacity: 1; transform: translateY(0); }
 .video-item video {
@@ -550,8 +558,8 @@ body {
   position: absolute;
   top: 50%; left: 50%;
   transform: translate(-50%, -50%);
-  width: 55px; height: 55px;
-  background: rgba(192,132,151,0.8);
+  width: 60px; height: 60px;
+  background: rgba(192,132,151,0.85);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -1514,7 +1522,7 @@ videoFiles.forEach((f, idx) => {
   d.className = 'video-item';
   const date = getDateFromFile(f);
   d.innerHTML = `
-    <video preload="metadata" poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='720' height='1280'%3E%3Crect fill='%231a1a2e' width='720' height='1280'/%3E%3Ctext x='360' y='640' text-anchor='middle' fill='%23c08497' font-size='48'%3E▶%3C/text%3E%3C/svg%3E" src="videos/${f}" muted playsinline></video>
+    <video preload="metadata" src="videos/${f}" muted playsinline></video>
     <div class="play-btn">&#9654;</div>
     <div class="duration"></div>
     <div class="vdate">${date}</div>

@@ -475,14 +475,14 @@ body {
   background: rgba(0,0,0,0.3);
 }
 
-/* ===== Gift / Food / Scenery Grids ===== */
-.gift-grid, .food-grid, .scenery-grid {
+/* ===== Food / Scenery Grids ===== */
+.food-grid, .scenery-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: 14px;
   padding: 0 10px;
 }
-.gift-grid .item, .food-grid .item, .scenery-grid .item {
+.food-grid .item, .scenery-grid .item {
   border-radius: 12px;
   overflow: hidden;
   cursor: pointer;
@@ -491,26 +491,26 @@ body {
   transition: all 0.5s ease;
   position: relative;
 }
-.gift-grid .item.visible, .food-grid .item.visible, .scenery-grid .item.visible {
+.food-grid .item.visible, .scenery-grid .item.visible {
   opacity: 1; transform: scale(1);
 }
-.gift-grid .item:nth-child(2n), .food-grid .item:nth-child(2n), .scenery-grid .item:nth-child(2n) { transition-delay: 0.08s; }
-.gift-grid .item:nth-child(3n), .food-grid .item:nth-child(3n), .scenery-grid .item:nth-child(3n) { transition-delay: 0.15s; }
-.gift-grid .item img, .food-grid .item img, .scenery-grid .item img {
+.food-grid .item:nth-child(2n), .scenery-grid .item:nth-child(2n) { transition-delay: 0.08s; }
+.food-grid .item:nth-child(3n), .scenery-grid .item:nth-child(3n) { transition-delay: 0.15s; }
+.food-grid .item img, .scenery-grid .item img {
   width: 100%;
   height: 240px;
   object-fit: cover;
   display: block;
   transition: transform 0.6s;
 }
-.gift-grid .item:hover img, .food-grid .item:hover img, .scenery-grid .item:hover img { transform: scale(1.07); }
-.gift-grid .item.landscape img, .food-grid .item.landscape img, .scenery-grid .item.landscape img {
+.food-grid .item:hover img, .scenery-grid .item:hover img { transform: scale(1.07); }
+.food-grid .item.landscape img, .scenery-grid .item.landscape img {
   object-fit: contain;
   background: rgba(0,0,0,0.3);
 }
 @media (max-width: 600px) {
-  .gift-grid, .food-grid, .scenery-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
-  .gift-grid .item img, .food-grid .item img, .scenery-grid .item img { height: 160px; }
+  .food-grid, .scenery-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .food-grid .item img, .scenery-grid .item img { height: 160px; }
 }
 
 /* ===== Videos ===== */
@@ -1061,15 +1061,6 @@ footer .heart { color: #c08497; display: inline-block; animation: heartBeat 1.5s
   </div>
 </section>
 
-<!-- ===== GIFTS ===== -->
-<section class="gift-section" id="gifts">
-  <div class="section">
-    <h2 class="section-title">给你的<span class="accent">心意</span></h2>
-    <p class="section-sub">— 想把全世界最好的都给你 —</p>
-    <div class="gift-grid" id="giftGrid"></div>
-  </div>
-</section>
-
 <!-- ===== FOOD ===== -->
 <section class="food-section" id="food">
   <div class="section">
@@ -1428,9 +1419,7 @@ const coupleFiles = [
   "47b09ebfba42c4dc012e31400f1fe058.jpg","70f660960d6c78b928ba2e6748a1496c.jpg"
 ];
 const allCouple = coupleFiles.map(f => ({ src: `photos/couple/${f}`, type: 'couple' }));
-const allGifts = giftFiles.map(f => ({ src: `photos/gifts/${f}`, type: 'gift' }));
-const allFood = foodFiles.map(f => ({ src: `photos/food/${f}`, type: 'food' }));
-const allScenery = sceneryFiles.map(f => ({ src: `photos/scenery/${f}`, type: 'scenery' }));
+const allGiftCouple = giftCoupleFiles.map(f => ({ src: `photos/gifts/${f}`, type: 'couple' }));
 
 coupleFiles.forEach(f => {
   const d = document.createElement('div');
@@ -1457,7 +1446,10 @@ let lbIdx = 0;
 
 // Build combined lightbox list
 function buildLBList() {
-  lbItems = [...allHer, ...allCouple, ...allGifts, ...allFood, ...allScenery];
+  lbItems = [...allHer, ...allCouple, ...allGiftCouple,
+    ...foodFiles.map(f => ({ src: `photos/food/${f}`, type: 'food' })),
+    ...sceneryFiles.map(f => ({ src: `photos/scenery/${f}`, type: 'scenery' }))
+  ];
 }
 buildLBList();
 
@@ -1544,21 +1536,21 @@ const videoObs = new IntersectionObserver(entries => {
 document.querySelectorAll('.video-item').forEach(el => videoObs.observe(el));
 createObserver('.video-item');
 
-// ===== Gifts =====
-const giftFiles = [
+// ===== Gifts (shown as couple photos) =====
+const giftCoupleFiles = [
   "IMG_20260116_224106.jpg","mmexport1777212990304.jpg","mmexport1777214128321.jpg",
   "mmexport1778373376924.jpg","mmexport1778373411503.jpg","mmexport1779273529373.jpg",
   "wx_camera_1778382741793.jpg"
 ];
-giftFiles.forEach(f => {
+giftCoupleFiles.forEach(f => {
   const d = document.createElement('div'); d.className = 'item';
   const img = document.createElement('img');
   img.src = `photos/gifts/${f}`; img.alt = ''; img.loading = 'lazy'; img.decoding = 'async';
   img.addEventListener('load', function() { if (this.naturalWidth > this.naturalHeight) this.closest('.item').classList.add('landscape'); });
   img.addEventListener('click', () => openLB(`photos/gifts/${f}`));
-  d.appendChild(img); document.getElementById('giftGrid').appendChild(d);
+  d.appendChild(img);
+  document.getElementById('coupleGrid').appendChild(d);
 });
-createObserver('.gift-grid .item');
 
 // ===== Food =====
 const foodFiles = [

@@ -1430,7 +1430,7 @@ const coupleFiles = [
   "mmexport1770225882137.jpg","mmexport1771827055750.jpg",
   "mmexport1772126618745.jpg","mmexport1772126842131.jpg","mmexport1772126848369.jpg",
   "mmexport1772212477157.jpg","mmexport1772219820066.jpg","IMG_20260304_203219.jpg",
-  "IMG_20260304_203306.jpg","mmexport1772646416354.jpg","mmexport1772646420142.jpg",
+  "IMG_20260304_203306.jpg",
   "mmexport1778339351297.jpg","mmexport1778339354736.jpg",
   "mmexport1778339359591.jpg","mmexport1778339363252.jpg","mmexport1778339366271.jpg",
   "mmexport1778339369960.jpg","mmexport1778339376689.jpg","mmexport1778339383211.jpg",
@@ -1538,10 +1538,14 @@ const videoObs = new IntersectionObserver(entries => {
       const v = e.target.querySelector('video');
       if (v && v.preload !== 'metadata') {
         v.preload = 'metadata';
+        v.muted = true;
         v.onloadedmetadata = () => {
           const m = Math.floor(v.duration / 60);
           const s = Math.floor(v.duration % 60);
           e.target.querySelector('.duration').textContent = `${m}:${String(s).padStart(2,'0')}`;
+          // Seek to first frame to show video cover on mobile
+          v.currentTime = 0.1;
+          v.play().then(() => { v.pause(); }).catch(() => {});
         };
       }
       videoObs.unobserve(e.target);
